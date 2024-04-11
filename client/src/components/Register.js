@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import eyeIcon from "../assets/eye-icon.png";
+import axios from "axios";
 
 function Register(props) {
     const [realName, setRealName] = useState('');
@@ -8,12 +9,29 @@ function Register(props) {
     const [password, setPassword] = useState('');
     const [birthYear, setBirthYear] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [gender, setGender] = useState('');
+    const [residence, setResidence] = useState('')
     const [errors, setErrors] = useState({});
+    const [registereErr, setRegisterErr] = useState('')
 
     const navigate = useNavigate();
+
+    function hasNumber(myString) {
+        return /\d/.test(myString);
+    }
     const handleLogin = () => {
         navigate('/login'); // Use the path you want to redirect to
     };
+
+
+    const handleGenderChange = (event) => {
+        setGender(event.target.value);
+    };
+
+    const handleResidenceChange = (event) => {
+        setResidence(event.target.value);
+    };
+
 
     const validateForm = () => {
         let formIsValid = true;
@@ -24,9 +42,18 @@ function Register(props) {
             errors["username"] = "*Please enter your username.";
         }
 
-        if (!realName) {
+        if (!realName || hasNumber(realName)) {
             formIsValid = false;
             errors["realName"] = "*Please enter your real name.";
+        }
+
+        if (!gender) {
+            formIsValid = false;
+            errors["gender"] = "*Please select a gender";
+        }
+        if (residence.length === 0) {
+            formIsValid = false;
+            errors["residence"] = "*Please select a residence";
         }
 
         if (!birthYear || birthYear.length !== 4 || !/^\d{4}$/.test(birthYear) || birthYear < 1900 || birthYear >2024) {
@@ -35,6 +62,7 @@ function Register(props) {
         }
 
         if (password.length < 8 && !errors["password"]) {
+            formIsValid = false;
             errors["password"] = '*Invalid Form, Password must contain greater than or equal to 8 characters.'
         }
 
@@ -61,18 +89,22 @@ function Register(props) {
         }
 
         if (countLowerCase === 0 && !errors["password"]) {
+            formIsValid = false;
             errors["password"] = '*Invalid Form, 0 lower case characters in password'
         }
 
         if (countUpperCase === 0 && !errors["password"]) {
+            formIsValid = false;
             errors["password"] = '*Invalid Form, 0 upper case characters in password'
         }
 
         if (countDigit === 0 && !errors["password"]) {
+            formIsValid = false;
             errors["password"] = '*Invalid Form, 0 digit characters in password'
         }
 
         if (countSpecialCharacters === 0 && !errors["password"]) {
+            formIsValid = false;
             errors["password"] = '*Invalid Form, 0 special characters in password'
         }
 
@@ -80,11 +112,21 @@ function Register(props) {
         return formIsValid;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log("Form submitted:", { username, password });
-            // Here you can also call an API to submit the login details
+            console.log("Form submitted:", { realName,  username, password, birthYear, gender, residence });
+            try {
+                const res = await axios.post("http://localhost:3001/create-user", {realName, username, password, birthYear, gender, residence});
+                if (res.status === 201) {
+                    navigate("/quiz")
+                } else {
+                    setRegisterErr("Internal server error")
+                }
+            } catch (error) {
+                setRegisterErr("User already exists")
+                console.error("There was an error fetching the FAQ data:", error);
+            }
         }
     };
 
@@ -111,16 +153,38 @@ function Register(props) {
                         onChange={(e) => setBirthYear(e.target.value)}
                     />
                     <div className="error">{errors.birthYear}</div>
-        </div>
-    <div className="form-group">
-        <label htmlFor="username">Username:</label>
-        <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-        />
-        <div className="error">{errors.username}</div>
+                </div>
+                <div className="form-group">
+                    <label className="sex-group">Sex: </label>
+                    <select value={gender} onChange={e => handleGenderChange(e)} className="select">
+                        <option value="" className="option">Please select</option>
+                        <option value="Male" className="option">Male</option>
+                        <option value="Female" className="option">Female</option>
+                    </select>
+                    <div className="error">{errors.gender}</div>
+                    <hr className="hor-line"/>
+                </div>
+                <div className="form-group">
+                    <label className="sex-group">Place of residence: </label>
+                    <select value={residence} onChange={e => handleResidenceChange(e)} className="select">
+                        <option value="" className="option">Please select</option>
+                        <option value="village" className="option">Village</option>
+                        <option value="small city" className="option">Small city</option>
+                        <option value="average city" className="option">Average city</option>
+                        <option value="big city" className="option">Big city</option>
+                    </select>
+                    <div className="error">{errors.residence}</div>
+                    <hr className="hor-line"/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="username">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <div className="error">{errors.username}</div>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password:</label>
@@ -138,6 +202,9 @@ function Register(props) {
                 </div>
                 <div className="login-btn-block">
                     <button type="submit" className="submit-btn">Register</button>
+                    {registereErr.length > 0 && (
+                    <p className="reg-err"  >{registereErr}</p>
+                    )}
                     <div className="register-block">
                         <p className="sub-text">Already have an account?</p>
                         <p className="sub-text register" onClick={handleLogin}>Log in now!</p>
