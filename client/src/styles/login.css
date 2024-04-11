@@ -1,6 +1,6 @@
 /* LoginForm.css */
 .form {
-    width: 50%;
+    width: 45%;
 }
 
 .form-group {
@@ -58,6 +58,8 @@
     align-items: center;
     flex-direction: column;
     background: url("../assets/login-bg.png");
+    background-position: center;
+    background-size:cover;
 }
 
 .login-btn-block {
@@ -106,4 +108,54 @@
 .eye-icon:hover {
     cursor: pointer;
     opacity: 0.5;
+}
+
+.select {
+    width: 130px;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border-color: #ccc;
+    background: #f8f8f8;
+    cursor: pointer;
+}
+
+.hor-line {
+    border: 1px solid #ccc;
+    opacity: 0.5;
+}
+
+.sex-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.option {
+    padding: 10px;
+    background: #f2f2f2;
+    border-color: #ccc;
+}
+
+.reg-err {
+    color: darkred;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+}
+
+@media(max-width : 768px)
+{
+    .login-text {
+        font-family: "Outfit", sans-serif;
+        font-size: 40px;
+        font-weight: 600;
+    }
+    .login-btn-block
+    {
+        flex-direction: column;
+        padding: auto;
+    }
+    .sub-text
+    {
+        text-align: center;
+    }
 }

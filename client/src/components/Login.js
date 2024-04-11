@@ -3,12 +3,15 @@ import "../styles/login.css"
 import {useNavigate} from "react-router-dom";
 import eyeIcon from "../assets/eye-icon.png"
 import Reveal from "../Reveal";
+import axios from "axios";
 
 function Login(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
+    const [loginErr, setLoginErr] = useState('')
+
 
     const navigate = useNavigate();
     const handleRegisterClick = () => {
@@ -70,11 +73,25 @@ function Login(props) {
         return formIsValid;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
             console.log("Form submitted:", { username, password });
-            // Here you can also call an API to submit the login details
+            try {
+                const params = {
+                    name: username,
+                    password: password
+                };
+                const res = await axios.get(`http://localhost:3001/login-user`, {params});
+                if (res.status !== 200) {
+                    setLoginErr("Incorrect email or password")
+                } else {
+                    navigate("/quiz")
+                }
+            } catch (error) {
+                setLoginErr("Incorrect email or password")
+                console.error("There was an error fetching the FAQ data:", error);
+            }
         }
     };
 
@@ -113,6 +130,16 @@ function Login(props) {
                         <p className="sub-text">Do not have an account yet?</p>
                         <p className="sub-text register" onClick={handleRegisterClick}>Register now!</p>
                     </div>
+                <div className="error">{errors.password}</div>
+            </div>
+            <div className="login-btn-block">
+                <button type="submit" className="submit-btn">Login</button>
+                {loginErr.length > 0 && (
+                    <p className="reg-err">{loginErr}</p>
+                )}
+                <div className="register-block">
+                    <p className="sub-text">Do not have an account yet?</p>
+                    <p className="sub-text register" onClick={handleRegisterClick}>Register now!</p>
                 </div>
             </form>
             </div>

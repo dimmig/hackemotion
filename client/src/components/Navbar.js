@@ -11,16 +11,7 @@ function Navbar(props) {
                 <a className="header-href"  href="#">About</a>
                 <a className="header-href"  href="#">Products</a>
                 <a  className="header-href" href="#">Contacts</a>
-                <button className="faq-btn" onClick={async () => {
-                    try {
-                        const res = await axios.get("http://localhost:3001/data");
-                        console.log(res);
-                        // Do something with res.data here, e.g., set state
-                    } catch (error) {
-                        console.error("There was an error fetching the FAQ data:", error);
-                        // Handle the error here, e.g., set an error state, show notification
-                    }
-                }}>FAQ</button>
+                <button className="faq-btn">FAQ</button>
             </div>
         </div>
     );
