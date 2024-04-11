@@ -1,6 +1,6 @@
 /* LoginForm.css */
 .form {
-    width: 50%;
+    width: 45%;
 }
 
 .form-group {
@@ -58,6 +58,8 @@
     align-items: center;
     flex-direction: column;
     background: url("../assets/login-bg.png");
+    background-position: center;
+    background-size:cover;
 }
 
 .login-btn-block {
@@ -106,4 +108,16 @@
 .eye-icon:hover {
     cursor: pointer;
     opacity: 0.5;
+}
+@media(max-width : 768px)
+{
+    .login-btn-block
+    {
+        flex-direction: column;
+        padding: auto;
+    }
+    .sub-text
+    {
+        text-align: center;
+    }
 }
