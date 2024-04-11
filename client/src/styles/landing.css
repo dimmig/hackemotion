@@ -23,16 +23,18 @@ html {
 .navbar {
     display: flex;
     flex-direction: row;
-    width: 100%;
-    padding: 10px 10px 0;
+    justify-content: space-between;
+    width: auto;
+    padding: 1%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 3%;
 }
 
 .sections {
     display: flex;
-    justify-content: space-around;
-    width: 30%;
-    margin-left: 50%;
-    padding-top: 10px;
+    justify-content: space-between;
+    width: 40%;
     align-items: center;
 }
 
@@ -70,8 +72,9 @@ html {
 .header {
     display: flex;
     flex-direction: row;
-    padding: 5% 0;
-    justify-content: space-around;
+    margin-left: 5%;
+    margin-right: 5%;
+    justify-content: center;
     align-items: center;
 }
 
@@ -79,6 +82,8 @@ html {
     font-family: "Outfit", sans-serif;
     font-size: 70px;
     font-weight: 600;
+    text-align: left;
+    white-space: unset;
     color: #201E20;
     margin: 0;
 }
@@ -92,7 +97,6 @@ display: flex;
 .header-img {
     width: 600px;
     height: 600px;
-    padding: 0 10rem;
 }
 
 .header-desc {
@@ -105,11 +109,11 @@ display: flex;
 }
 
 .header-wrapper {
+    width: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: baseline;
-    padding-left: 5%;
 }
 
 .expore-btn {
@@ -128,4 +132,73 @@ display: flex;
     cursor: pointer;
     background-color: #fff;
     color: #010101;
+}
+@media(max-width : 1000px)
+{
+    .header-wrapper
+    {
+        width: 70%;
+    }
+}
+@media(max-width : 768px)
+{
+    .header-img
+    {
+        display: none;
+    }
+    .header-wrapper
+    {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+    }
+    .header-text
+    {
+        text-align: center;
+    }
+    .header-desc
+    {
+        text-align: center;
+    }
+    .sections {
+        display: flex;
+        justify-content: center;
+        width: 30%;
+        margin-left: 50%;
+        padding-top: 10px;
+        align-items: center;
+    }
+    .sections {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        align-items: center;    
+        margin: auto;
+        padding: auto;
+    }
+}
+@media(max-width : 480px)
+{
+    .header-wrapper
+    {
+        padding: 0;
+        width: auto;
+    }
+    .navbar
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        padding: 0;
+    }
+    .sections {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        align-items: center;    
+        margin: auto;
+        padding: auto;
+    }
 }

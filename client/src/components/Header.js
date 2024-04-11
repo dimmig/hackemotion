@@ -6,9 +6,7 @@ function Header(props) {
         <div className="header">
             <div className="header-wrapper">
             <div className="header-section">
-                <p className="header-text">Unlock</p>
-                <p className="header-text">The Power </p>
-                <p className="header-text">Of Emotune </p>
+                <p className="header-text">Unlock <br />The Power Of <br /> Emotune </p>
             </div>
             <p className="header-desc">Emotune is a revolutionary platform that empowers individuals to gain deeper
                 insights into the emotional states of others, fostering enhanced interpersonal connections and </p>
