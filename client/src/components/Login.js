@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import "../styles/login.css"
 import {useNavigate} from "react-router-dom";
 import eyeIcon from "../assets/eye-icon.png"
+import Reveal from "../Reveal";
 
 function Login(props) {
     const [username, setUsername] = useState('');
@@ -78,42 +79,44 @@ function Login(props) {
     };
 
     return (
-        <div className="login">
-            <p className="login-text">Log in</p>
-        <form onSubmit={handleSubmit} noValidate className="form">
-            <div className="form-group">
-                <label htmlFor="username">Username:</label>
-                <input
-                    type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <div className="error">{errors.username}</div>
-            </div>
-            <div className="form-group">
-                <label htmlFor="password">Password:</label>
-                <div className="input-btn">
-                <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <img src={eyeIcon}  className="eye-icon"  alt="Eye icon" onClick={() =>  setShowPassword(prev => !prev)}/>
+        <Reveal animationDuration={.6}>
+            <div className="login">
+                <p className="login-text">Log in</p>
+            <form onSubmit={handleSubmit} noValidate className="form">
+                <div className="form-group">
+                    <label htmlFor="username">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <div className="error">{errors.username}</div>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password">Password:</label>
+                    <div className="input-btn">
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <img src={eyeIcon}  className="eye-icon"  alt="Eye icon" onClick={() =>  setShowPassword(prev => !prev)}/>
 
+                    </div>
+                    <div className="error">{errors.password}</div>
                 </div>
-                <div className="error">{errors.password}</div>
-            </div>
-            <div className="login-btn-block">
-                <button type="submit" className="submit-btn">Login</button>
-                <div className="register-block">
-                    <p className="sub-text">Do not have an account yet?</p>
-                    <p className="sub-text register" onClick={handleRegisterClick}>Register now!</p>
+                <div className="login-btn-block">
+                    <button type="submit" className="submit-btn">Login</button>
+                    <div className="register-block">
+                        <p className="sub-text">Do not have an account yet?</p>
+                        <p className="sub-text register" onClick={handleRegisterClick}>Register now!</p>
+                    </div>
                 </div>
+            </form>
             </div>
-        </form>
-        </div>
+        </Reveal>
     );
 
 }

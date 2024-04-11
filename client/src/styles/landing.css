@@ -25,6 +25,7 @@ html {
     flex-direction: row;
     justify-content: space-between;
     width: auto;
+    height: auto;
     padding: 1%;
     margin-left: 5%;
     margin-right: 5%;
@@ -39,16 +40,18 @@ html {
 }
 
 .header-href {
+    transition: all .3s ease;
     color: #919091;
     font-size: 16px;
     text-decoration: none;
-    transition: all 0.2s ease;
+    border-bottom: 1px solid #91909100;
 }
 
 .header-href:hover {
     cursor: pointer;
     border-bottom: 1px solid #919091;
     color: #606062;
+    transform: scale(1.05);
 }
 
 .faq-btn {
@@ -60,7 +63,7 @@ html {
     font-weight: bold;
     background-color: #fff;
     border-radius: 10px;
-    transition: all 0.2s ease;
+    transition: all 0.4s ease;
 }
 
 .faq-btn:hover {
@@ -74,6 +77,7 @@ html {
     flex-direction: row;
     margin-left: 5%;
     margin-right: 5%;
+    height: 80%;
     justify-content: center;
     align-items: center;
 }
@@ -124,7 +128,7 @@ display: flex;
     border: 1px solid #010101;
     color: #CECCCB;
     font-size: 14px;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     margin-top: 5%;
 
 }
@@ -134,6 +138,7 @@ display: flex;
     cursor: pointer;
     background-color: #fff;
     color: #010101;
+    transform: scale(1.02);
 }
 @media(max-width : 1000px)
 {

@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import eyeIcon from "../assets/eye-icon.png";
+import Reveal from "../Reveal";
 
 function Register(props) {
     const [realName, setRealName] = useState('');
@@ -89,62 +90,64 @@ function Register(props) {
     };
 
     return (
-        <div className="login">
-            <p className="login-text">Create your account</p>
-            <form onSubmit={handleSubmit} noValidate className="form">
-                <div className="form-group">
-                    <label htmlFor="realname">Your name:</label>
-                    <input
-                        type="text"
-                        id="realname"
-                        value={realName}
-                        onChange={(e) => setRealName(e.target.value)}
-                    />
-                    <div className="error">{errors.realName}</div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="birthYear">Birth Year:</label>
-                    <input
-                        type="text"
-                        id="birthYear"
-                        value={birthYear}
-                        onChange={(e) => setBirthYear(e.target.value)}
-                    />
-                    <div className="error">{errors.birthYear}</div>
-        </div>
-    <div className="form-group">
-        <label htmlFor="username">Username:</label>
-        <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-        />
-        <div className="error">{errors.username}</div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password:</label>
-                    <div className="input-btn">
+        <Reveal animationDuration={.6}>
+            <div className="login">
+                <p className="login-text">Create your account</p>
+                <form onSubmit={handleSubmit} noValidate className="form">
+                    <div className="form-group">
+                        <label htmlFor="realname">Your name:</label>
                         <input
-                            type={showPassword ? "text" : "password"}
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            type="text"
+                            id="realname"
+                            value={realName}
+                            onChange={(e) => setRealName(e.target.value)}
                         />
-                        <img src={eyeIcon} className="eye-icon" alt="Eye icon"
-                             onClick={() => setShowPassword(prev => !prev)}/>
+                        <div className="error">{errors.realName}</div>
                     </div>
-                    <div className="error">{errors.password}</div>
-                </div>
-                <div className="login-btn-block">
-                    <button type="submit" className="submit-btn">Register</button>
-                    <div className="register-block">
-                        <p className="sub-text">Already have an account?</p>
-                        <p className="sub-text register" onClick={handleLogin}>Log in now!</p>
+                    <div className="form-group">
+                        <label htmlFor="birthYear">Birth Year:</label>
+                        <input
+                            type="text"
+                            id="birthYear"
+                            value={birthYear}
+                            onChange={(e) => setBirthYear(e.target.value)}
+                        />
+                        <div className="error">{errors.birthYear}</div>
+            </div>
+        <div className="form-group">
+            <label htmlFor="username">Username:</label>
+            <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+            <div className="error">{errors.username}</div>
                     </div>
-                </div>
-            </form>
-        </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password:</label>
+                        <div className="input-btn">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <img src={eyeIcon} className="eye-icon" alt="Eye icon"
+                                onClick={() => setShowPassword(prev => !prev)}/>
+                        </div>
+                        <div className="error">{errors.password}</div>
+                    </div>
+                    <div className="login-btn-block">
+                        <button type="submit" className="submit-btn">Register</button>
+                        <div className="register-block">
+                            <p className="sub-text">Already have an account?</p>
+                            <p className="sub-text register" onClick={handleLogin}>Log in now!</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </Reveal>
     );
 
 }
