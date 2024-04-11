@@ -8,17 +8,16 @@ function Header(props) {
         navigate('/login'); // Use the path you want to redirect to
     };
     return (
-        <div className="header">
-            <div className="header-wrapper">
-            <div className="header-section">
-                <p className="header-text">Unlock <br />The Power Of <br /> Emotune </p>
+            <div className="header">
+                <div className="header-wrapper">
+                <div className="header-section">
+                    <p className="header-text">Unlock <br />The Power Of <br /> Emotune </p>
+                </div>
+                <p className="header-desc">Emotune is a revolutionary platform that empowers individuals to gain deeper insights into the emotional states of others, fostering enhanced interpersonal connections and empathy.</p>
+                    <button className="expore-btn" onClick={handleExploreClick}>Explore emotune</button>
+                </div>
+                <img src={img} className="header-img"/>
             </div>
-            <p className="header-desc">Emotune is a revolutionary platform that empowers individuals to gain deeper
-                insights into the emotional states of others, fostering enhanced interpersonal connections and </p>
-                <button className="expore-btn" onClick={handleExploreClick}>Expolore emotune</button>
-            </div>
-            <img src={img} className="header-img"/>
-        </div>
     );
 }
 
