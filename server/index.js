@@ -7,11 +7,11 @@ app.use(cors());
 // Create connection pool
 const connection  = mysql.createConnection({
     connectionLimit : 10, // Maximum number of connections in pool
-    host            : 'DESKTOP-I8GNR9D',
+    host            : 'localhost',
     port:             3306,
-    user            : 'D7JU09',
-    password        : 'D7JU09',
-    database        : 'Bazy2024'
+    user            : 'root',
+    password        : '60028081',
+    database        : 'Hackemotion'
 });
 
 connection.connect(err => {
