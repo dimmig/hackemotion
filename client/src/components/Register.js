@@ -1,10 +1,14 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import eyeIcon from "../assets/eye-icon.png";
+import closedEyeIcon from "../assets/eyebrow.png"
 import Reveal from "../Reveal";
 import axios from "axios";
+import {useSignIn} from "react-auth-kit";
+import logo from "../assets/logo.png";
 
 function Register(props) {
+    sessionStorage.removeItem("user")
     const [realName, setRealName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -14,9 +18,8 @@ function Register(props) {
     const [residence, setResidence] = useState('')
     const [errors, setErrors] = useState({});
     const [registereErr, setRegisterErr] = useState('')
-
     const navigate = useNavigate();
-
+const signIn = useSignIn()
     function hasNumber(myString) {
         return /\d/.test(myString);
     }
@@ -120,6 +123,16 @@ function Register(props) {
             try {
                 const res = await axios.post("http://localhost:3001/create-user", {realName, username, password, birthYear, gender, residence});
                 if (res.status === 201) {
+                    console.log("DATA AFTER CREATE USER", res.data.data.token)
+                    const token = res.data.data.token
+                    signIn({
+                        token: token,
+                        expiresIn: 3600,
+                        tokenType: "Bearer",
+                        authState: {email: username}
+                    })
+                    sessionStorage.setItem("user", username)
+                    localStorage.setItem("access-token", token)
                     navigate("/quiz")
                 } else {
                     setRegisterErr("Internal server error")
@@ -134,68 +147,11 @@ function Register(props) {
     return (
         <Reveal animationDuration={.6}>
             <div className="login">
+                <img src={logo} alt="logo" onClick={() => navigate("/")} className="logo logo-login"/>
                 <p className="login-text">Create your account</p>
                 <form onSubmit={handleSubmit} noValidate className="form">
                     <div className="form-group">
                         <label htmlFor="realname">Your name:</label>
-        <div className="login">
-            <p className="login-text">Create your account</p>
-            <form onSubmit={handleSubmit} noValidate className="form">
-                <div className="form-group">
-                    <label htmlFor="realname">Your name:</label>
-                    <input
-                        type="text"
-                        id="realname"
-                        value={realName}
-                        onChange={(e) => setRealName(e.target.value)}
-                    />
-                    <div className="error">{errors.realName}</div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="birthYear">Birth Year:</label>
-                    <input
-                        type="text"
-                        id="birthYear"
-                        value={birthYear}
-                        onChange={(e) => setBirthYear(e.target.value)}
-                    />
-                    <div className="error">{errors.birthYear}</div>
-                </div>
-                <div className="form-group">
-                    <label className="sex-group">Sex: </label>
-                    <select value={gender} onChange={e => handleGenderChange(e)} className="select">
-                        <option value="" className="option">Please select</option>
-                        <option value="Male" className="option">Male</option>
-                        <option value="Female" className="option">Female</option>
-                    </select>
-                    <div className="error">{errors.gender}</div>
-                    <hr className="hor-line"/>
-                </div>
-                <div className="form-group">
-                    <label className="sex-group">Place of residence: </label>
-                    <select value={residence} onChange={e => handleResidenceChange(e)} className="select">
-                        <option value="" className="option">Please select</option>
-                        <option value="village" className="option">Village</option>
-                        <option value="small city" className="option">Small city</option>
-                        <option value="average city" className="option">Average city</option>
-                        <option value="big city" className="option">Big city</option>
-                    </select>
-                    <div className="error">{errors.residence}</div>
-                    <hr className="hor-line"/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <div className="error">{errors.username}</div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password:</label>
-                    <div className="input-btn">
                         <input
                             type="text"
                             id="realname"
@@ -213,16 +169,36 @@ function Register(props) {
                             onChange={(e) => setBirthYear(e.target.value)}
                         />
                         <div className="error">{errors.birthYear}</div>
-            </div>
-        <div className="form-group">
-            <label htmlFor="username">Username:</label>
-            <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <div className="error">{errors.username}</div>
+                    </div>
+                    <div className="form-group">
+                        <label className="sex-group">Sex:</label>
+                        <select value={gender} onChange={handleGenderChange} className="select">
+                            <option value="">Please select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <div className="error">{errors.gender}</div>
+                    </div>
+                    <div className="form-group">
+                        <label className="residence-group">Place of residence:</label>
+                        <select value={residence} onChange={handleResidenceChange} className="select">
+                            <option value="">Please select</option>
+                            <option value="village">Village</option>
+                            <option value="small city">Small city</option>
+                            <option value="average city">Average city</option>
+                            <option value="big city">Big city</option>
+                        </select>
+                        <div className="error">{errors.residence}</div>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="username">Username:</label>
+                        <input
+                            type="text"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <div className="error">{errors.username}</div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password:</label>
@@ -233,27 +209,23 @@ function Register(props) {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                            <img src={eyeIcon} className="eye-icon" alt="Eye icon"
-                                onClick={() => setShowPassword(prev => !prev)}/>
+                            {showPassword ? (<img src={closedEyeIcon} className="eye-icon" alt="Eye icon"
+                                                  onClick={() => setShowPassword(prev => !prev)}/>
+                                ):
+                                (<img src={eyeIcon} className="eye-icon" alt="Eye icon" onClick={() => setShowPassword(prev => !prev)} />)}
+
                         </div>
                         <div className="error">{errors.password}</div>
                     </div>
                     <div className="login-btn-block">
                         <button type="submit" className="submit-btn">Register</button>
+                        {registereErr.length > 0 && (
+                            <p className="reg-err">{registereErr}</p>
+                        )}
                         <div className="register-block">
                             <p className="sub-text">Already have an account?</p>
                             <p className="sub-text register" onClick={handleLogin}>Log in now!</p>
                         </div>
-                    <div className="error">{errors.password}</div>
-                </div>
-                <div className="login-btn-block">
-                    <button type="submit" className="submit-btn">Register</button>
-                    {registereErr.length > 0 && (
-                    <p className="reg-err"  >{registereErr}</p>
-                    )}
-                    <div className="register-block">
-                        <p className="sub-text">Already have an account?</p>
-                        <p className="sub-text register" onClick={handleLogin}>Log in now!</p>
                     </div>
                 </form>
             </div>

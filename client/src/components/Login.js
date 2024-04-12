@@ -1,16 +1,24 @@
 import React, {useState} from 'react';
 import "../styles/login.css"
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import eyeIcon from "../assets/eye-icon.png"
+import closedEyeIcon from "../assets/eyebrow.png"
 import Reveal from "../Reveal";
 import axios from "axios";
+import {useSignIn} from "react-auth-kit";
+import logo from "../assets/logo.png";
+
 
 function Login(props) {
+    // sessionStorage.removeItem("user")
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [loginErr, setLoginErr] = useState('')
+    const signIn = useSignIn()
+
 
 
     const navigate = useNavigate();
@@ -82,10 +90,19 @@ function Login(props) {
                     name: username,
                     password: password
                 };
-                const res = await axios.get(`http://localhost:3001/login-user`, {params});
+                const res = await axios.post(`http://localhost:3001/login-user`, params);
                 if (res.status !== 200) {
                     setLoginErr("Incorrect email or password")
                 } else {
+                    const token = res.data.token
+                    signIn({
+                        token: token,
+                        expiresIn: 3600,
+                        tokenType: "Bearer",
+                        authState: {email: username}
+                    })
+                    sessionStorage.setItem("user", username)
+                    localStorage.setItem("access-token", token)
                     navigate("/quiz")
                 }
             } catch (error) {
@@ -96,54 +113,59 @@ function Login(props) {
     };
 
     return (
-        <Reveal animationDuration={.6}>
-            <div className="login">
+        <div className="login">
+            <img src={logo} alt="logo" onClick={() => navigate("/")} className="logo logo-login"/>
+            <Reveal animationDuration={.3} delay={.2}>
                 <p className="login-text">Log in</p>
+            </Reveal>
             <form onSubmit={handleSubmit} noValidate className="form">
-                <div className="form-group">
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <div className="error">{errors.username}</div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password:</label>
-                    <div className="input-btn">
-                    <input
-                        type={showPassword ? "text" : "password"}
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <img src={eyeIcon}  className="eye-icon"  alt="Eye icon" onClick={() =>  setShowPassword(prev => !prev)}/>
+                <Reveal animationDuration={.3} delay={.3}>
+                    <div className="form-group">
+                        <label htmlFor="username">Username:</label>
+                        <input
+                            type="text"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <div className="error">{errors.username}</div>
+                    </div>
+                </Reveal>
+                <Reveal animationDuration={.3} delay={.4}>
 
+                    <div className="form-group">
+                        <label htmlFor="password">Password:</label>
+                        <div className="input-btn">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            {showPassword ? (<img src={closedEyeIcon} className="eye-icon" alt="Eye icon"
+                                 onClick={() => setShowPassword(prev => !prev)}/>
+                                ):
+                                (<img src={eyeIcon} className="eye-icon" alt="Eye icon" onClick={() => setShowPassword(prev => !prev)} />)}
+                                </div>
+                        <div className="error">{errors.password}</div>
                     </div>
-                    <div className="error">{errors.password}</div>
-                </div>
+                </Reveal>
                 <div className="login-btn-block">
-                    <button type="submit" className="submit-btn">Login</button>
-                    <div className="register-block">
-                        <p className="sub-text">Do not have an account yet?</p>
-                        <p className="sub-text register" onClick={handleRegisterClick}>Register now!</p>
-                    </div>
-                <div className="error">{errors.password}</div>
-            </div>
-            <div className="login-btn-block">
-                <button type="submit" className="submit-btn">Login</button>
-                {loginErr.length > 0 && (
-                    <p className="reg-err">{loginErr}</p>
-                )}
-                <div className="register-block">
-                    <p className="sub-text">Do not have an account yet?</p>
-                    <p className="sub-text register" onClick={handleRegisterClick}>Register now!</p>
+                    <Reveal animationDuration={.3} delay={.5}>
+                        <button type="submit" className="submit-btn">Login</button>
+                    </Reveal>
+                    {loginErr.length > 0 && (
+                        <p className="reg-err">{loginErr}</p>
+                    )}
+                    <Reveal animationDuration={.2} delay={.6}>
+                        <div className="register-block">
+                            <p className="sub-text">Do not have an account yet?</p>
+                            <p className="sub-text register" onClick={handleRegisterClick}>Register now!</p>
+                        </div>
+                    </Reveal>
                 </div>
             </form>
-            </div>
-        </Reveal>
+        </div>
     );
 
 }

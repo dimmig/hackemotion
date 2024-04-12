@@ -20,6 +20,11 @@ html {
     height: 50px;
 }
 
+.logo:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
 .navbar {
     display: flex;
     flex-direction: row;

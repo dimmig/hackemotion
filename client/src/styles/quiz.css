@@ -1,0 +1,111 @@
+.quiz {
+    width: 100vw;
+    height: 100vh;
+    background: url("../assets/login-bg.png") center;
+}
+
+.quiz-main-text {
+    font-family: "Outfit", sans-serif;
+    font-size: 50px;
+    font-weight: 600;
+    text-align: center;
+    white-space: unset;
+    color: #838385;
+}
+
+.quiz-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.quiz-img {
+    width: 500px;
+    height: 500px;
+    border: 5px solid #838385;
+}
+
+.answer-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 5rem;
+}
+
+.ans-but-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10%
+}
+
+.ans-button {
+    width: 150px;
+    height: 50px;
+    background-color: #010101;
+    border-radius: 10px;
+    border: 1px solid #010101;
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-top: 10%;
+}
+
+.ans-button:hover {
+    background-color: #fff;
+    color: #010101;
+    cursor: pointer;
+}
+
+.quiz-summary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30vh;
+}
+
+.quiz-summary h2 {
+    font-family: "Outfit", sans-serif;
+    font-size: 50px;
+    font-weight: 600;
+    text-align: center;
+    white-space: unset;
+    color: #010101;
+}
+
+.quiz-summary p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #838385;
+}
+
+.restart-session-btn {
+    margin-top: 20px;
+    width: 170px;
+}
+
+.answer-feedback {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.answer-feedback.correct {
+    background-color: rgb(0, 143, 10);;
+    color: white
+}
+
+.answer-feedback.incorrect {
+    background-color: rgba(255, 0, 88);
+    color: white
+}
+
+.logout-btn {
+    margin-top: 40px;
+    margin-right: 20px;
+    float: right;
+}
