@@ -100,10 +100,13 @@ function Quiz(props) {
         if (finished) {
             return (
                 <div className="quiz-summary">
+                    <img src={logo} alt="logo" onClick={() => navigate("/")} className="logo logo-login"/>
                     <h2>Quiz Summary</h2>
                     <p>Correct Answers: {correctAnswersCount}</p>
                     <p>Incorrect Answers: {incorrectAnswersCount}</p>
-                    <button className="ans-button restart-session-btn" onClick={() => window.location.reload()}>Start another session</button>
+                    <button className="ans-button restart-session-btn" onClick={() => window.location.reload()}>Start
+                        another session
+                    </button>
                 </div>
             );
         }
@@ -207,7 +210,6 @@ function Quiz(props) {
         setIsCorrect(isAnswerCorrect);
         setCorrectAnswer(currentEmotion);
 
-        // Update the correct or incorrect count based on the answer
         if (isAnswerCorrect) {
             setCorrectAnswersCount(correct => correct + 1);
             recognizedEmotions.push(images[currentImageIndex].split(".")[0])
@@ -216,24 +218,21 @@ function Quiz(props) {
             setIncorrectAnswersCount(incorrect => incorrect + 1);
         }
 
-        setUserAnswered(true); // Set the flag that the user has answered
+        setUserAnswered(true);
 
-        // Wait for 5 seconds before moving on to the next image or ending the quiz
         setTimeout(() => {
             if (currentImageIndex < images.length - 1) {
                 setCurrentImageIndex(prevIndex => prevIndex + 1);
             } else {
-                // If it's the last image, set the finished state to true
                 setFinished(true);
             }
-            setUserAnswered(false); // Reset for the next question
-            setIsCorrect(null); // Reset the correctness state
+            setUserAnswered(false);
+            setIsCorrect(null);
             setIsButtonDisabled(false);
         }, 2000);
     };
 
 
-    // Function to handle button click
     const handleButtonClick = async (e) => {
         const res = await handleAnswer(e.target.textContent)
             if(res !== -1) {
@@ -241,38 +240,32 @@ function Quiz(props) {
             }
     };
 
-    function randomIntFromInterval(min, max) { // min and max included
+    function randomIntFromInterval(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
     const fillAnswers = () => {
-        const usedAnswers = new Set(); // Use a Set to track which answers have been used
+        const usedAnswers = new Set();
         const correctEmotion = images[currentImageIndex].split('.')[0].slice(0, -1);
-        const buttons = [1, 2, 3, 4]; // Assuming you have 4 answer buttons
+        const buttons = [1, 2, 3, 4];
 
-        // Randomly assign the correct answer to one of the buttons
         const correctButtonIndex = randomIntFromInterval(1, 4);
         if (document.getElementById(`button-${correctButtonIndex}`) !== null) {
             document.getElementById(`button-${correctButtonIndex}`).textContent = correctEmotion;
         }
-        usedAnswers.add(correctEmotion); // Add the correct answer to the Set of used answers
+        usedAnswers.add(correctEmotion);
 
-        // Remove the correct button from the array of button indices
         const buttonsWithoutCorrect = buttons.filter(index => index !== correctButtonIndex);
 
-        // Fill the rest of the buttons with incorrect answers
         for (let i = 0; i < buttonsWithoutCorrect.length; i++) {
             let wrongAnswer = '';
             let potentialWrongEmotion = '';
 
-            // Find a unique incorrect answer
             do {
-                // Pick a random image from the array
                 const randomImageIndex = randomIntFromInterval(0, images.length - 1);
                 potentialWrongEmotion = images[randomImageIndex].split('.')[0].slice(0, -1);
             } while (usedAnswers.has(potentialWrongEmotion) || potentialWrongEmotion === correctEmotion);
 
-            // Assign the incorrect answer to the button
             wrongAnswer = potentialWrongEmotion;
             if (document.getElementById(`button-${buttonsWithoutCorrect[i]}`) !== null)
             {

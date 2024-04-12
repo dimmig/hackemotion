@@ -71,10 +71,8 @@ app.post('/login-user', (req, res) => {
             console.error('Error executing query:', error);
             return res.status(500).json({ error: 'Internal server error' });
         }
-        console.log("RESULTS ", results)
         if (results.length > 0 && results[0].password === password) {
             const token = jwt.sign({loginValue}, SECRET_KEY, { expiresIn: '1h' });
-            console.log("SUCCESS")
             return res.status(200).json({results, token});
 
         } else {
@@ -171,11 +169,8 @@ const getEmotionImages = async (dirPath) => {
 
         let selectedFiles = [];
         for (let emotion in groupedFiles) {
-            // Sort the files to ensure they are in the correct order
             const sortedFiles = groupedFiles[emotion].sort();
-            // Only consider the first 3 images of each emotion for selection
             const choices = sortedFiles.slice(0, 3);
-            // Randomly select one of the first three images
             const index = Math.floor(Math.random() * choices.length);
             selectedFiles.push(choices[index]);
         }
